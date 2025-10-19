@@ -39,12 +39,12 @@ const TimelineEventForm = ({ userId }: TimelineEventFormProps) => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.from("timeline_events").insert([{
+      const { error } = await supabase.from("timeline_events").insert({
         user_id: userId,
         titulo,
         descricao,
-        categoria,
-      }]);
+        categoria: categoria as "infancia" | "adolescencia" | "vida_adulta" | "relacionamentos" | "carreira" | "saude" | "outros",
+      });
 
       if (error) throw error;
 

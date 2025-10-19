@@ -38,11 +38,11 @@ const DailyEntryForm = ({ userId }: DailyEntryFormProps) => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.from("daily_entries").insert([{
+      const { error } = await supabase.from("daily_entries").insert({
         user_id: userId,
         texto,
-        emocao,
-      }]);
+        emocao: emocao as "feliz" | "triste" | "ansioso" | "calmo" | "irritado" | "animado" | "cansado" | "grato",
+      });
 
       if (error) throw error;
 
