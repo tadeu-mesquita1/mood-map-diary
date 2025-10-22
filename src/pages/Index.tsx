@@ -44,25 +44,25 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <Tabs defaultValue="diario" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="diario" className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
-              <span>Diário</span>
+      <main className="container mx-auto px-4 py-6 sm:py-8 max-w-4xl">
+        <Tabs defaultValue="diario" className="space-y-4 sm:space-y-6">
+          <TabsList className="grid w-full grid-cols-2 h-auto">
+            <TabsTrigger value="diario" className="flex items-center gap-2 py-3">
+              <BookOpen className="w-4 h-4 shrink-0" />
+              <span className="text-sm sm:text-base">Diário</span>
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              <span>Linha do Tempo</span>
+            <TabsTrigger value="timeline" className="flex items-center gap-2 py-3">
+              <Clock className="w-4 h-4 shrink-0" />
+              <span className="text-sm sm:text-base">Linha do Tempo</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="diario" className="space-y-6 animate-fade-in">
+          <TabsContent value="diario" className="space-y-4 sm:space-y-6 animate-fade-in">
             <DailyEntryForm userId={userId} />
             <EntriesList userId={userId} />
           </TabsContent>
 
-          <TabsContent value="timeline" className="space-y-6 animate-fade-in">
+          <TabsContent value="timeline" className="space-y-4 sm:space-y-6 animate-fade-in">
             <TimelineEventForm userId={userId} />
             <TimelineList userId={userId} />
           </TabsContent>

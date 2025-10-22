@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Smile, Frown, Zap, Wind, Flame, PartyPopper, Moon, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Smile, Frown, Zap, Wind, Flame, PartyPopper, Moon, Sparkles, Download } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { exportDiaryToPDF } from "@/utils/pdfExport";
+import { useToast } from "@/hooks/use-toast";
 
 const EMOTION_ICONS: Record<string, any> = {
   feliz: { icon: Smile, color: "text-yellow-500" },
@@ -31,6 +34,24 @@ interface EntriesListProps {
 const EntriesList = ({ userId }: EntriesListProps) => {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+
+  const handleExportPDF = () => {
+    if (entries.length === 0) {
+      toast({
+        title: "Nenhum registro",
+        description: "Não há registros para exportar.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    exportDiaryToPDF(entries);
+    toast({
+      title: "PDF exportado!",
+      description: "Seu diário foi exportado com sucesso.",
+    });
+  };
 
   const fetchEntries = async () => {
     try {
@@ -74,7 +95,13 @@ const EntriesList = ({ userId }: EntriesListProps) => {
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Últimos Registros</h3>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <h3 className="text-lg font-semibold">Últimos Registros</h3>
+        <Button onClick={handleExportPDF} className="w-full sm:w-auto" size="sm">
+          <Download className="w-4 h-4 mr-2" />
+          Exportar PDF
+        </Button>
+      </div>
       {entries.map((entry) => {
         const emotionData = EMOTION_ICONS[entry.emocao];
         const Icon = emotionData?.icon || Smile;
@@ -82,20 +109,20 @@ const EntriesList = ({ userId }: EntriesListProps) => {
         return (
           <Card key={entry.id} className="transition-all hover:shadow-md">
             <CardContent className="pt-6">
-              <div className="flex items-start gap-3">
-                <div className={`p-2 rounded-full bg-muted ${emotionData?.color}`}>
+              <div className="flex flex-col sm:flex-row items-start gap-3">
+                <div className={`p-2 rounded-full bg-muted ${emotionData?.color} shrink-0`}>
                   <Icon className="w-5 h-5" />
                 </div>
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Badge variant="secondary" className="capitalize">
+                <div className="flex-1 space-y-2 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <Badge variant="secondary" className="capitalize w-fit">
                       {entry.emocao}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
                       {format(new Date(entry.created_at), "dd 'de' MMMM 'às' HH:mm", { locale: ptBR })}
                     </span>
                   </div>
-                  <p className="text-sm leading-relaxed">{entry.texto}</p>
+                  <p className="text-sm leading-relaxed break-words">{entry.texto}</p>
                 </div>
               </div>
             </CardContent>

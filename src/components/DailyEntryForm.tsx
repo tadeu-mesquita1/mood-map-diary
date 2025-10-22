@@ -68,7 +68,7 @@ const DailyEntryForm = ({ userId }: DailyEntryFormProps) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           <div className="space-y-2">
             <Label htmlFor="texto">O que você gostaria de compartilhar?</Label>
             <Textarea

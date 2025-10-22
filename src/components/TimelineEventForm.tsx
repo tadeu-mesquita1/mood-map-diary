@@ -71,7 +71,7 @@ const TimelineEventForm = ({ userId }: TimelineEventFormProps) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
           <div className="space-y-2">
             <Label htmlFor="categoria">Categoria</Label>
             <Select value={categoria} onValueChange={setCategoria}>
